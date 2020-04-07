@@ -65,33 +65,11 @@ for i  in  $now_all_connect_ip;do
 ##判断当前目录下all_ip_info是否有该ip的信息如果没有就写进all_ip_info
     if [ "$bbip" == "" ]; then
 ###获取IP地信息如果没有获取到就一直循环去获取直道获取到了为止      
-
-####淘宝接口http://ip.taobao.com/service/getIpInfo.php?ip=实际ip 发现有时会502不太稳定 
-#     while :;do
-#       tem_info_a=$(curl -s  --connect-timeout 2  -m 5  http://ip.taobao.com/service/getIpInfo.php?ip=$i)
-#       [ "${tem_info_a}" !=  "" ] && break
-#       done
-#    echo $( echo ${tem_info_a} | awk -F"," '{print $2 "\t" $3 "\t" $6 }'| awk -F"{"  '{print $2}'|awk  '{print $1 "_" $2 "_"$3}')_$(date "+%Y-%m-%d-%H:%M:%S")_$(date +%s) >> ./history_all_ip_info
-##    echo ${tem_info_a}
-#    sleep 1 
-#    fi
-###判断当前目录下history_all_ip_info是否有该ip的信息如果没有就写进history_all_ip_info
-#    if [ "$aaip" == "" ]; then  
-####获取IP地信息如果没有获取到就一直循环去获取直道获取到了为止
-#       while :;do
-#       tem_info_b=$(curl  -s --connect-timeout 2  -m 5  http://ip.taobao.com/service/getIpInfo.php?ip=$i)
-#       [ "${tem_info_b}" !=  "" ] && break
-#       done
-#    echo $(echo $tem_info_b | awk -F"," '{print $2 "\t" $3 "\t" $6 }'| awk -F"{"  '{print $2}'|awk  '{print $1 "_" $2 "_"$3}')_$(date "+%Y-%m-%d-%H:%M:%S")_$(date +%s) >> ./all_ip_info
-##    echo $tem_info_b
-#    sleep 1
-
-####http://api.pi.do/api/v1/queryip?ip=实际ip 国外免费的地址库接口，比较稳定，但速度相对有点慢，由于接口服务器在国外如果要限制国外ip，一定要在白名单文件ip_whitelist里放开107.172.5.171地址
-   while :;do
-       tem_info_a=$(curl -s  --connect-timeout 6  -m 5  http://api.pi.do/api/v1/queryip?ip=$i)
+       while :;do
+       tem_info_a=$(curl -s  --connect-timeout 2  -m 5  http://ip.taobao.com/service/getIpInfo.php?ip=$i)
        [ "${tem_info_a}" !=  "" ] && break
        done
-    echo $( echo ${tem_info_a} | awk -F"," '{print $1 "\t" $3 "\t" $6 }'| awk -F"{"  '{print $3}'|awk  '{print $1 "_" $2 "_"$3}')_$(date "+%Y-%m-%d-%H:%M:%S")_$(date +%s) >> ./history_all_ip_info
+    echo $( echo ${tem_info_a} | awk -F"," '{print $2 "\t" $3 "\t" $6 }'| awk -F"{"  '{print $2}'|awk  '{print $1 "_" $2 "_"$3}')_$(date "+%Y-%m-%d-%H:%M:%S")_$(date +%s) >> ./history_all_ip_info
 #    echo ${tem_info_a}
     sleep 1 
     fi
@@ -99,14 +77,12 @@ for i  in  $now_all_connect_ip;do
     if [ "$aaip" == "" ]; then  
 ###获取IP地信息如果没有获取到就一直循环去获取直道获取到了为止
        while :;do
-       tem_info_b=$(curl  -s --connect-timeout 6  -m 5  http://api.pi.do/api/v1/queryip?ip=$i)
+       tem_info_b=$(curl  -s --connect-timeout 2  -m 5  http://ip.taobao.com/service/getIpInfo.php?ip=$i)
        [ "${tem_info_b}" !=  "" ] && break
        done
-    echo $(echo $tem_info_b | awk -F"," '{print $1 "\t" $3 "\t" $6 }'| awk -F"{"  '{print $3}'|awk  '{print $1 "_" $2 "_"$3}')_$(date "+%Y-%m-%d-%H:%M:%S")_$(date +%s) >> ./all_ip_info
+    echo $(echo $tem_info_b | awk -F"," '{print $2 "\t" $3 "\t" $6 }'| awk -F"{"  '{print $2}'|awk  '{print $1 "_" $2 "_"$3}')_$(date "+%Y-%m-%d-%H:%M:%S")_$(date +%s) >> ./all_ip_info
 #    echo $tem_info_b
     sleep 1
-
-
     fi
 done
 
@@ -218,7 +194,6 @@ change_now_time=$(expr ${change_time} / 3600  )
 
 else
 #echo 没有信息
-##将一个小时之前的时间戳写入files_tatus 
 echo my_history_all_ip_info=$(expr $(date +%s) - 3600 ) > ./files_tatus
 fi
 
